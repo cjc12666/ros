@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<robot name="smartcar" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:property name="length" value="0.02"/>
+    <xacro:property name="radius" value="0.02"/>
+    <xacro:property name="leng" value="0.25"/>
+    <xacro:property name="width" value="0.16"/>
+    <xacro:property name="height" value="0.05"/>
+
+    <material name="black">
+        <color rgba="0.3 0.2 0 1"/>
+    </material>
+    <material name="blue">  
+        <color rgba="0 0 .8 1"/>  
+    </material>  
+
+    <xacro:macro name="wheel" params="LR FB sym1 sym2 sym3">
+        <link name="${LR}_${FB}_wheel">
+            <visual>
+                <origin xyz="0.0 0.0 0.0" rpy="1.570 0.0 0.0"/>
+                <geometry>
+                    <cylinder radius="${radius}" length="${length}"/>
+                </geometry>
+                <material name="black"/>
+            </visual>
+        </link>
+        <joint name="joint_${LR}_${FB}_wheel" type="continuous">
+            <parent link = "base_link"/>
+            <child link = "${LR}_${FB}_wheel"/>
+            <origin xyz = "${sym1*(leng/2-0.05)} ${sym2*(width-length)/2} ${sym3*(height/2+radius)}" rpy = "0 0 0"/>
+            <axis xyz="0 1 0" />
+        </joint>
+     </xacro:macro>
+
+    <link name="base_link">  
+        <visual>  
+        <geometry>  
+            <box size="${leng} ${width} ${height}"/>  
+        </geometry>  
+        <origin rpy="0 0 0" xyz="0 0 0"/>  
+        <material name="blue"/>  
+        </visual>  
+    </link>  
+
+      
+    <xacro:wheel LR="left" FB="front" sym1="1" sym2="1" sym3="-1" />
+    <xacro:wheel LR="left" FB="back" sym1="-1" sym2="1" sym3="-1" />
+    <xacro:wheel LR="right" FB="front" sym1="1" sym2="-1" sym3="-1" />
+    <xacro:wheel LR="right" FB="back" sym1="-1" sym2="-1" sym3="-1" />
+</robot>
